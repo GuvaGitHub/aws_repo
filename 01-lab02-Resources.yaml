@@ -1,0 +1,37 @@
+# Add Format Version section here.
+AWSTemplateFormatVersion: '2010-09-09'
+
+# Add Description section here.
+Description : CFN 101 Workshop - Lab 02 Resources
+
+# Add Metadata section here.
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: 'Amazon EC2 Configuration'
+        Parameters:
+          - InstanceType
+    ParameterLabels:
+      InstanceType:
+        default: 'Type of EC2 Instance'
+
+# Add Parameters section here.
+Parameters:
+  InstanceType:
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+      - t2.micro
+      - t2.small
+      - t2.nano
+      - t2.large
+    Description: 'Enter t2.micro or t2.small or t2.nano. Default is t2.micro.'
+
+# Add Resources section here.
+Resources:
+  WebServerInstance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      InstanceType: !Ref InstanceType
+      ImageId: ami-0be2609ba883822ec

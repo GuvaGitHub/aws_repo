@@ -1,0 +1,62 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'A simple template intended to be run in N.Virginia (us-east-1) with a Linux (1) distro. Feel free to change the ami so that you can run this in a different Region'
+Parameters:
+  InstanceType:
+   Description: ' Webserver Instance type'
+   Type: String
+   Default: t2.micro
+  LatestAmiId:
+    Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+    Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
+  EnvironmentType:
+   Description: 'Provide environment name'
+   Type: String
+   Default: dev
+   AllowedValues:
+   - dev
+   - uat
+   - prod
+  EmployeeName:
+   Description: 'Provide employee name'
+   Type: String
+  Date:
+   Description: 'Provide current date'
+   Type: Number
+Resources:
+ Instance01:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      ImageId: !Ref LatestAmiId
+      InstanceType: !Ref InstanceType
+      Tags:
+      - Key: Name 
+        Value: !Join ['-', ['webserver', !Ref EnvironmentType] ]
+      - Key: CreatedBy
+        Value: !Ref  EmployeeName
+      - Key: CreatedDate
+        Value: !Ref Date
+ Instance02:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      ImageId: !Ref LatestAmiId
+      InstanceType: !Ref InstanceType
+      Tags:
+      - Key: Name 
+        Value: !Join ['-', ['appserver', !Ref EnvironmentType] ]
+      - Key: CreatedBy
+        Value: !Ref  EmployeeName
+      - Key: CreatedDate
+        Value: !Ref Date
+ Instance03:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      ImageId: !Ref LatestAmiId
+      InstanceType: !Ref InstanceType
+      Tags:
+      - Key: Name 
+        Value: !Join ['-', ['dbserver', !Ref EnvironmentType] ]
+      - Key: CreatedBy
+        Value: !Ref  EmployeeName
+      - Key: CreatedDate
+        Value: !Ref Date
